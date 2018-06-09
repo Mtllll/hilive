@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hilive.mapper.ForumMapper">
+    <insert id="addPost" parameterType="Foruminfo">
+        <selectKey keyProperty="id" order="AFTER" resultType="int">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into foruminfo(title,authorid,publishtime,viewcount,responsecount,topic_markdown_content,topic_html_content)
+        values(#{title},#{authorid},#{publishtime},0,0,#{topic_markdown_content},#{topic_html_content})
+    </insert>
+    <select id="getAllPost" resultType="map">
+        select * from foruminfo
+        join userinfo on foruminfo.authorid=userinfo.id
+    </select>
+    <select id="getPostById" parameterType="int" resultType="map">
+        select * from foruminfo
+        join userinfo on foruminfo.authorid=userinfo.id
+        where foruminfo.id=#{id}
+    </select>
+    <update id="addViewCount" parameterType="int">
+        update foruminfo set viewcount = viewcount + 1 where id = #{pid}
+    </update>
+    <update id="addResponseCount" parameterType="int">
+        update foruminfo set responsecount = responsecount + 1 where id = #{pid}
+    </update>
+    <update id="minusResponseCount" parameterType="int">
+        update foruminfo set responsecount = responsecount - 1 where id = #{pid}
+    </update>
+    <delete id="deletePost" parameterType="int">
+        delete from foruminfo where id=#{pid}
+    </delete>
+    <update id="changeLastUser" parameterType="Lastresponsepostinfo">
+        update foruminfo
+        set lastresponseusername = #{lastusername},lastresponsetime = #{lastresponsetime},lastresponseid = #{lastuserid}
+        where id = #{postid}
+    </update>
+    <select id="getPagedPosts" parameterType="PageInfo" resultType="map">
+        select * from foruminfo
+        join userinfo on foruminfo.authorid=userinfo.id
+        limit #{pageStart},#{pageSize}
+    </select>
+    <select id="getTotalRecords" resultType="int">
+        select count(*) as total from foruminfo
+        join userinfo on foruminfo.authorid=userinfo.id
+    </select>
+    <select id="getPostsByUserID" parameterType="int" resultType="Foruminfo">
+        select * from foruminfo
+        where authorid = #{value}
+    </select>
+</mapper>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hilive.mapper.SearchMapper">
+    <select id="getsearchinfo" resultType="map" parameterType="String">
+ select id,title,content, 1 as bankuai_id from foruminfo
+where foruminfo.title  LIKE #{value} or foruminfo.content LIKE #{value}
+union all
+select id, title,content,2 as bankuai_id  from articleinfo
+where articleinfo.title LIKE #{value} or articleinfo.content LIKE #{value}
+    </select>
+    <select id="getAllPost1" resultType="map">
+        select * from foruminfo
+        join userinfo on foruminfo.authorid=userinfo.id
+    </select>
+    <select id="allArticle"  resultType="map">
+        select articleinfo.id,articleinfo.title,articleinfo.content,articleinfo.comment_count,articleinfo.praise_count,
+        articleinfo.share_count,articleinfo.createtime,userinfo.username from articleinfo,userinfo where articleinfo.user_id
+        =userinfo.id ORDER by articleinfo.createtime desc
+    </select>
+    <select id="getPostById" parameterType="int" resultType="map">
+        select * from foruminfo
+        join userinfo on foruminfo.authorid=userinfo.id
+        where foruminfo.id=#{id}
+    </select>
+
+    
+
+
+
+
+
+</mapper>

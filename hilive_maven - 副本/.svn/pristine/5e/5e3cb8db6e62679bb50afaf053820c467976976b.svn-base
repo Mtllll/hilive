@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hilive.mapper.GoodsCommentMapper">
+
+    <insert parameterType="GoodsComment" id="addGoodsComment" >
+        <selectKey keyProperty="id" order="AFTER" resultType="int">
+            SELECT LAST_INSERT_ID();
+        </selectKey>
+        insert INTO goodscomment ( userid,goods_id,score, price_from, shortcoming, virtues, general,
+        comment_time, praise_count) VALUE (#{userid},#{goods_id},#{score},#{price_from},#{shortcoming},
+        #{virtues},#{general},#{comment_time},#{praise_count})
+    </insert>
+    <select id="showGoodsCommentById" resultType="map" parameterType="int">
+        SELECT * FROM goodscomment join userinfo ON userinfo.id=goodscomment.userid  WHERE
+        goodscomment.goods_id=#{value} ORDER BY goodscomment.comment_time DESC
+    </select>
+
+</mapper>

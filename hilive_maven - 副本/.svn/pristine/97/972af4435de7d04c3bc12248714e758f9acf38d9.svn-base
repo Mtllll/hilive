@@ -1,0 +1,138 @@
+package com.hilive.controller;
+
+import com.hilive.mapper.*;
+import com.hilive.util.StringDate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created by ttc on 18-4-9.
+ */
+@Controller
+public class searchController {
+    @Autowired
+    SearchMapper searchMapper;
+    @Autowired
+    ResponsepostMapper responsepostMapper;
+@Autowired
+ForumMapper forumMapper;
+@Autowired
+ArticleMapper articleMapper;
+@Autowired
+articleCommentMapper    articleCommentMapper;
+
+
+//    @RequestMapping("searchinfo")
+//    public String search() {
+//        return "search";
+//    }
+
+    @RequestMapping("searchinfo")
+    public String gotoForum(Model model, HttpServletRequest request, String title)
+    {
+        List<Map<String,Object>> postLst=searchMapper.getAllPost1();
+        for(Map<String,Object>map:postLst)
+        {
+               Timestamp date = (Timestamp)map.get("publishtime");
+            String strDate = StringDate.getStringDate(date);
+            map.put("publishtime",strDate);
+        }
+
+        request.getSession().setAttribute("postLst",postLst);
+
+
+        List<Map<String,Object>> list=searchMapper.allArticle();
+        for(Map<String,Object>map:postLst)
+        {
+            Timestamp date = (Timestamp)map.get("createtime");
+            String strDate = StringDate.getStringDate(date);
+            map.put("createtime",strDate);
+        }
+        request.getSession().setAttribute("allArticle",list);
+
+
+        HttpSession session = request.getSession();
+        if (title.equals("")) {
+            model.addAttribute("error", "查询结果0条");
+        } else {
+            List<Map<String, Object>> mapList = searchMapper.getsearchinfo("%" + title + "%");
+            model.addAttribute("mapList", mapList);
+        }
+
+        return "search";
+    }
+
+
+
+    @RequestMapping("serachsubmit1")
+    public String serachsubmit(Model model, HttpServletRequest request, String title)
+
+    {
+        HttpSession session = request.getSession();
+        if (title.equals("")) {
+            model.addAttribute("error", "查询无结果");
+        } else {
+            List<Map<String, Object>> mapList = searchMapper.getsearchinfo("%" + title + "%");
+            model.addAttribute("mapList", mapList);
+        }
+
+return "search";
+    }
+    @RequestMapping("gobaidu")
+    public  String  baidu (String title, HttpServletRequest req, HttpServletResponse resp) throws UnsupportedEncodingException {
+
+        req.setCharacterEncoding("utf-8");
+        resp.setContentType("text/html;charset=utf-8");
+        title = URLEncoder.encode(title,"utf-8");
+       String str = "redirect:http://www.baidu.com/s?ie=utf-8&cus_sid=9963133823733045431&tn=SE_pscse_053x7tyx&wd="+(title);
+        return str;
+    }
+//    https://www.baidu.com/s?ie=utf-8&cus_sid=9963133823733045431&tn=SE_pscse_053x7tyx&wd="+title
+
+@RequestMapping("searchdetails/{aid}/{id}")
+    public  ModelAndView details1(@PathVariable int aid ,@PathVariable Integer id,Model model,HttpServletRequest request) {
+              ModelAndView modelAndView = new ModelAndView();
+        System.out.println("1111111111111111111111111111111111111111111111111111111111111111" + id);
+    if (aid == 1) {
+        System.out.println("1111111111111111111111111111111111111111111111111111111111111111");
+//            Map<String,Object> article_details=searchMapper.view_searcharticle(id);
+//            model.addAttribute("article_details",article_details);
+    /*查看全部评论*/
+        forumMapper.addViewCount(id);
+        Map<String,Object> map=forumMapper.getPostById(id);
+        List<Map<String,Object>> mapList=responsepostMapper.getAllResponsesById(id);
+        request.getSession().setAttribute("postid",id);
+        model.addAttribute("responsepostList",mapList);
+        model.addAttribute("postView",map);
+
+        modelAndView.setViewName("postPage");
+    }
+        if (aid ==2){
+
+            Map<String,Object> article_details=articleMapper.view_article(id);
+            modelAndView.addObject("article_details",article_details);
+    /*查看全部评论*/
+            List<Map<String,Object>> map=articleCommentMapper.currentComment(id);
+            modelAndView.addObject("currentComment",map);
+            modelAndView.setViewName("article_details");
+
+    }
+
+return modelAndView;
+}
+
+}

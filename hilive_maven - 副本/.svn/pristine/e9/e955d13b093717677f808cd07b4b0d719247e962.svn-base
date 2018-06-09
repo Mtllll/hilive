@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hilive.mapper.ResponsepostMapper">
+    <insert id="addResponse" parameterType="Responsepostinfo">
+        <selectKey keyProperty="id" order="AFTER" resultType="int">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into responsepostinfo(responsecontent,postid,responseuserid,responsetime)
+        value (#{responsecontent},#{postid},#{responseuserid},#{responsetime})
+    </insert>
+    <select id="getAllResponsesById" resultType="map" parameterType="int">
+        select * from responsepostinfo
+        join foruminfo on responsepostinfo.postid=foruminfo.id
+        join userinfo on responsepostinfo.responseuserid=userinfo.id
+        where responsepostinfo.postid=#{pid} order by responsepostinfo.responsetime asc
+    </select>
+    <delete id="deleteComment" parameterType="int">
+        delete from responsepostinfo
+        where id=#{cid}
+    </delete>
+</mapper>

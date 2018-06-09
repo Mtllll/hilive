@@ -1,0 +1,283 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: Administrator
+  Date: 2018/4/8
+  Time: 20:16
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <meta name="viewport"
+          content="width=device-width,user-scalable=no,initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <link href="${pageContext.request.contextPath}/assets/uikit/css/uikit.almost-flat.css" rel="stylesheet">
+    <title>Title</title>
+    <%@include file="common/js_css_header.jsp"%>
+    <script src="${pageContext.request.contextPath}/assets/js/jquery-2.1.4.min.js"></script>
+    <style>
+        .myHomePage_body{
+            background-color: #F4F5F5;
+        }
+
+        .myHomePage .dis {
+            height: 20px;
+        }
+
+        .myHomePage a {
+            font-size: 16px;
+        }
+
+        .myHomePage .personelPic {
+            height: 90px;
+            width: 90px;
+            border-radius: 100%;
+        }
+
+        .myHomePage .personelInfo .jobAndAmbition {
+            text-decoration: none;
+            color: #4A68AD;
+            font-size: 15px;
+        }
+
+        .myHomePage .personelInfo .icon a {
+            font-size: 18px;
+        }
+
+        .myHomePage .personelInfo .editPersonelInfo {
+            color: #3780F7;
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #3780F7;
+            border-radius: 6px;
+            text-decoration: none;
+            background-color: white;
+            outline:none;
+            cursor:pointer;
+        }
+
+        .myHomePage .collectionAndTag a {
+            border-bottom: 1px solid #EDEDEE;
+        }
+
+        .myHomePage .collectionAndTag .uk-panel {
+            border-radius: 0;
+            border: 0;
+        }
+
+        .myHomePage .collectionAndTag .uk-panel:hover {
+            background-color: #F4F5F5;
+        }
+
+        .myHomePage .fans .uk-panel {
+            border: 0;
+        }
+
+        .myHomePage .fans .uk-panel:hover {
+            background-color: white;
+        }
+
+        .myHomePage .TagBar li {
+            padding: 20px;
+            display: inline-block;
+
+        }
+
+        .myHomePage .TagBar li a {
+
+            text-decoration: none;
+            color: black;
+        }
+
+        .myHomePage .TagBar {
+            background: white;
+        }
+        .myHomePage .TagBar .first{
+            border-bottom: 2px solid #3780F7;
+        }
+        .myHomePage .TagBar .first a{
+            color:#3780F7;
+        }
+
+        .addBorderBottom {
+            border-bottom: 2px solid #3780F7;
+        }
+
+        .myHomePage .uk-panel-box {
+            border: 0;
+        }
+        .myHomePage .content a{
+            border-bottom: 1px solid #F2F2F3;
+        }
+    </style>
+    <script>
+            // 选项卡处
+//            var TagBarLis = document.getElementById('TagBar').getElementsByTagName('li');
+//            var TagBarAs = document.getElementById('TagBar').getElementsByTagName('a');
+//            for (var i = 0; i < TagBarLis.length; i++) {
+//                TagBarLis[i].onclick = function (ev2) {
+//                    for (var i = 0; i < TagBarAs.length; i++) {
+//                        TagBarAs[i].style.color = 'black';
+//                    }
+//                    for (var i = 0; i < TagBarLis.length; i++) {
+//                        TagBarLis[i].className = '';
+//                    }
+//                    this.getElementsByTagName('a')[0].style.color = '#3780F7';
+//                    this.className = 'addBorderBottom';
+//                }
+//            }
+
+            //关注
+            $(function () {
+                $('#follow').click(function () {
+                    if(${userinfo==null})
+                    {
+                        top.location="${pageContext.request.contextPath}/login1";
+                    }
+                    else {
+                        if(this.value=="关注")
+                        {
+                            $.ajax({
+                                url:"${pageContext.request.contextPath}/follow/${otheruserinfo.id}",
+                                type:"get",
+                                dataType:"json",
+                                success:function (res) {
+
+                                }
+                            })
+                            $(this).val("取消关注");
+                        }
+                        else
+                        {
+                            $.ajax({
+                                url:"${pageContext.request.contextPath}/noFollow/${otheruserinfo.id}",
+                                type:"get",
+                                dataType:"json",
+                                success:function (res) {
+
+                                }
+                            })
+                            $(this).val("关注");
+                        }
+                    }
+                })
+            })
+    </script>
+</head>
+<body class="myHomePage_body">
+<%@include file="common/header.jsp"%>
+<div class="myHomePage">
+    <div class="dis">
+    </div>
+    <div class="uk-grid uk-container-center uk-container ">
+        <div class="uk-width-medium-3-4 ">
+            <!--个人信息-->
+            <div class="uk-panel uk-panel-box personelInfo uk-panel-box-secondary">
+                <div class="uk-grid uk-text-center">
+                    <div class="uk-width-medium-1-5">
+                        <img src="${pageContext.request.contextPath}/upload/${otheruserinfo.avatar}" class=" personelPic ">
+                    </div>
+                    <div class="uk-width-medium-3-5">
+                            <li class="name uk-text-bold uk-margin-bottom" style="font-size:26px">${otheruserinfo.username}</li>
+                    </div>
+                    <div class="uk-width-medium-1-5">
+                        <div>
+                            <%--<a href="" class="editPersonelInfo" id="follow1">关注</a>--%>
+                            <input type="button" class="editPersonelInfo" value="${strFollow}" id="follow">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dis">
+
+            </div>
+            <!--选项卡-->
+            <%--<div class="uk-grid-collapse">--%>
+                <%--<div class="tagBarDiv" >--%>
+                    <%--<ul class="TagBar uk-list" id="TagBar" style="margin: 0;border-bottom: 1px solid #F2F2F3">--%>
+                        <%--<ul>--%>
+                            <%--<li class="first"><a href="#">帖子</a></li>--%>
+                            <%--<li><a href="#">游记<span class="uk-margin-small-left">0</span></a></li>--%>
+                            <%--<li><a href="#">收藏<span class="uk-margin-small-left">0</span></a></li>--%>
+                            <%--<li><a href="#">关注<span class="uk-margin-small-left">0</span></a></li>--%>
+                            <%--<li><a href="#">粉丝--%>
+                                <%--<span class="uk-margin-small-left">0</span></a></li>--%>
+                        <%--</ul>--%>
+                    <%--</ul>--%>
+                <%--</div>--%>
+                <%--<!--内容-->--%>
+                <%--<div class="content">--%>
+                    <%--<a href="#" class=" uk-panel-box-secondary uk-panel-box uk-panel ">--%>
+                        <%--<span>喜欢了文章</span>--%>
+                        <%--<div class="uk-panel-hover uk-panel uk-panel-box  uk-text-bold">我的阿里之路+面试经考点</div>--%>
+                    <%--</a>--%>
+                    <%--<a href="#" class=" uk-panel-box-secondary uk-panel-box uk-panel ">--%>
+                        <%--<span>喜欢了文章</span>--%>
+                        <%--<div class="uk-panel-hover uk-panel uk-panel-box  uk-text-bold">我的阿里之路+面试经考点</div>--%>
+                    <%--</a>--%>
+                    <%--<a href="#" class=" uk-panel-box-secondary uk-panel-box uk-panel  ">--%>
+                        <%--<span>喜欢了文章</span>--%>
+                        <%--<div class="uk-panel-hover uk-panel uk-panel-box  uk-text-bold">我的阿里之路+面试经考点</div>--%>
+                    <%--</a>--%>
+                <%--</div>--%>
+            <%--</div>--%>
+        </div>
+        <!--右侧-->
+        <%--<div class="uk-width-medium-1-4 ">--%>
+        <%--<div class="uk-grid uk-grid-collapse fans">--%>
+        <%--<div class="uk-width-medium-1-2 ">--%>
+        <%--<a class="uk-panel-hover uk-text-center uk-panel uk-panel-box uk-panel-box-secondary">--%>
+        <%--<span>关注</span>--%>
+        <%--<div class="uk-text-bold">10</div>--%>
+        <%--</a>--%>
+        <%--</div>--%>
+        <%--<div class="uk-width-medium-1-2">--%>
+        <%--<a class=" uk-panel-hover uk-text-center uk-panel uk-panel-box uk-panel-box-secondary">--%>
+        <%--<span>关注了</span>--%>
+        <%--<div class="uk-text-bold">0</div>--%>
+        <%--</a>--%>
+        <%--</div>--%>
+        <%--</div>--%>
+        <%--<div class="uk-grid-collapse collectionAndTag">--%>
+        <%--<a class="uk-panel-hover uk-panel" style="margin-top: 20px;border-top: 1px solid #EDEDEE">--%>
+        <%--<span>收藏集</span> <span>0</span>--%>
+        <%--</a>--%>
+        <%--<a class="uk-panel-hover uk-panel">--%>
+        <%--<span>关注标签</span> <span>10</span>--%>
+        <%--</a>--%>
+        <%--</div>--%>
+        <%--</div>--%>
+
+
+    </div>
+</div>
+
+
+
+
+
+<%--<h2 style="color: deeppink;">编辑个人资料：哈哈哈哈哈，快来编辑吧</h2>--%>
+<%--<hr>--%>
+
+<%--<form action="${pageContext.request.contextPath}/do_edit_personalInfo" method="post" enctype="multipart/form-data">--%>
+<%--<div>--%>
+<%--姓名：<input type="text" name="username" id="username" value=${otheruserinfo.username}>--%>
+<%--</div>--%>
+<%--<div>--%>
+<%--昵称：<input type="text" name="nickname">--%>
+<%--</div>--%>
+<%--<div>--%>
+<%--<input type="radio" name="sex" value="男" checked="checked" />男--%>
+<%--<input type="radio" name="sex" value="女" />女--%>
+<%--</div>--%>
+<%--头像：<input type="file" name="avatar2">--%>
+<%--<div>--%>
+<%--<input type="submit" value="修改">--%>
+<%--</div>--%>
+
+<%--</form>--%>
+<%--<hr>--%>
+<%--<h3><a href="${pageContext.request.contextPath}/myArticle">我的游记</a></h3>--%>
+<%--<h3><a href="${pageContext.request.contextPath}/myTransmit">我转发的游记</a></h3>--%>
+</body>
+</html>

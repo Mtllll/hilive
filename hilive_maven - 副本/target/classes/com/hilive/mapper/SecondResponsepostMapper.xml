@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hilive.mapper.SecondResponsepostMapper">
+    <insert id="addSecondResponsepost" parameterType="SecondResponsepostinfo">
+        insert second_responsepostinfo set (responsepost_id,responsepost_username,second_responsepost_userid,second_responsepost_username,second_responsepost_content,second_responsepost_createtime)
+        values(#{responsepost_id},#{responsepost_username},#{second_responsepost_userid},#{second_responsepost_username},#{second_responsepost_content},#{second_responsepost_createtime})
+    </insert>
+    <select id="getAllSecondResponsepostById" parameterType="int" resultType="map">
+        select * from second_responsepostinfo
+        join userinfo on userinfo.id=second_responsepostinfo.second_responsepost_userid where responsepost_id=#{cid}
+    </select>
+    <select id="getAllSecondResponsepost" resultType="list">
+        select * from second_responsepostinfo
+        join userinfo on userinfo.id=second_responsepostinfo.second_responsepost_userid
+    </select>
+    <select id="getMaxId" resultType="int">
+        select max(id) from second_responsepostinfo where second_responsepost_content is not null or second_responsepost_content = ''
+    </select>
+    <select id="getCount" resultType="int">
+        select count(*) from second_responsepostinfo
+    </select>
+</mapper>

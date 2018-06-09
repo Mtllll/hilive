@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hilive.mapper.AnswerMapper">
+    <insert id="addAnswer" parameterType="AnswerInfo">
+        <selectKey keyProperty="id" order="AFTER" resultType="int">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into answerinfo(question_id,answer_userid,content,createtime,agree_count)
+        values(#{question_id},#{answer_userid},#{content},#{createtime},#{agree_count})
+    </insert>
+
+    <select id="getAnswersByQuestionId" parameterType="int" resultType="map">
+ select userinfo.avatar,userinfo.username,answerinfo.content,answerinfo.id,answerinfo.agree_count
+from questioninfo join answerinfo on answerinfo.question_id=questioninfo.id
+join userinfo on userinfo.id = questioninfo.user_id
+        where questioninfo.id = #{value}
+
+    </select>
+
+    <select id="getAnswersIdByCreatetime" parameterType="Date" resultType="int">
+       select answerInfo.id from answerInfo where answerInfo.createtime=#{value}
+    </select>
+
+    <select id="getAnswersByAnswerId" parameterType="int" resultType="map">
+       select answerinfo.id, answerinfo.content,answerinfo.agree_count,userinfo.avatar,userinfo.username ,questioninfo.title
+from answerinfo
+join questioninfo on answerinfo.question_id=questioninfo.id
+join userinfo on userinfo.id=answerinfo.answer_userid
+where answerinfo.id=#{value}
+    </select>
+    <update id="addagree_count" parameterType="int">
+         update answerinfo set answerinfo.agree_count=answerinfo.agree_count + 1 where answerinfo.id=#{value}
+    </update>
+    <update id="cutagree_count" parameterType="int">
+        update answerinfo set answerinfo.agree_count=answerinfo.agree_count - 1 where answerinfo.id=#{value}
+    </update>
+    <select id="getAnsweragree_countByAnswerId" parameterType="int" resultType="int">
+        select answerInfo.agree_count from answerInfo where answerInfo.id=#{value}
+    </select>
+</mapper>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h4><a href="#">户外大厅</a></h4>
+<a href="#">发帖子</a>
+<hr>
+<div>
+    <div>
+       <a href="#"> 我是帖子1</a>
+    </div>
+    <div>
+        <a href="#"> 我是帖子2</a>
+    </div>
+    <div>
+        <a href="#"> 我是帖子3</a>
+    </div>
+    <div>
+        <a href="#"> 我是帖子4</a>
+    </div>
+</div>
+</body>
+</html>

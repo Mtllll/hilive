@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+
+        div{
+            border-bottom: 1px solid red;
+        }
+        div span{
+            margin-left: 10px;
+            text-align: center;
+        }
+        form{
+        margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <span>
+        文章题目
+    </span>
+    <p>
+       啊啊啊啊啊啊啊啊 啊啊啊啊啊啊啊啊 啊啊啊啊啊啊啊啊
+
+    </p>
+</div>
+<h4>网友评论</h4>
+<form method="post" action="#">
+    <textarea rows="3"cols="20"></textarea>
+    <input type="submit" value="评论">
+</form>
+<p>全部评论</p>
+<hr>
+
+</body>
+</html>

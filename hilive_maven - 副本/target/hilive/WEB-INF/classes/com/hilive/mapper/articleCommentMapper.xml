@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hilive.mapper.articleCommentMapper">
+    <insert id="addComment" parameterType="articleCommentInfo">
+        <selectKey keyProperty="id" order="AFTER" resultType="int">
+            select LAST_INSERT_ID()
+        </selectKey>
+        INSERT into article_commentinfo (createtime,user_id,article_id,content)VALUES
+        (#{createtime},#{user_id},#{article_id},#{content})
+    </insert>
+    <select id="currentComment"  resultType="map" parameterType="int">
+select article_commentinfo.content,article_commentinfo.createtime,userinfo.username,userinfo.avatar from userinfo,article_commentinfo
+where userinfo.id=article_commentinfo.user_id and article_commentinfo.article_id=#{id} ORDER by article_commentinfo.createtime DESC
+    </select>
+</mapper>

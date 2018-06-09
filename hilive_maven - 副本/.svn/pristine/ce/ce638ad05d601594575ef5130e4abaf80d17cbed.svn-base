@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        li {
+            display: inline-block;
+        }
+        .div{
+            width: 800px;
+            margin-left: 100px;
+            margin-top: 50px;
+
+        }
+
+
+        .div div img {
+
+            margin-left: 20px;
+            width: 100px;
+            height: 70px;
+        }
+        .div div{
+            margin-bottom: 10px;
+        }
+        .div div .div1{
+
+           display: inline-block;
+            margin-left: 20px;
+            margin-top: 20px;
+        }
+        .div .div1 div1-1{
+            display: inline-block;
+            margin: 20px 20px;
+        }
+    </style>
+
+</head>
+<body>
+<ul>
+    <li><a href="#">户外大厅</a></li>
+    <li><a href="#">口碑</a></li>
+    <li><a href="#">游记</a></li>
+</ul>
+<ul class="ul">
+    <li>
+        <form action="#" method="post">
+            <input type="text">
+            <input type="submit" value="搜索">
+        </form>
+    </li>
+    <li><a href="#">登录</a></li>
+    <li><a href="#">注册</a></li>
+</ul>
+<div class="div">
+    <div>
+        <a href="#"><img src="pic/u=555935912,2358910708&fm=27&gp=0.jpg"></a>
+        <div class="div1">
+            <div class="div1-1">
+                <a href="#">文章题目</a>
+            </div>
+            <div class="div1-1">
+                文章内容文章内容文章内容文章内容文章内容文章内容
+            </div>
+    </div>
+    </div>
+    <div>
+        <a href="#"><img src="pic/u=813104884,605366009&fm=27&gp=0.jpg"></a>
+        <div class="div1">
+            <div class="div1-1">
+                <a href="#">文章题目</a>
+            </div>
+            <div class="div1-1">
+                文章内容文章内容文章内容文章内容文章内容文章内容
+            </div>
+        </div>
+    </div>
+    <div>
+        <a href="#"><img src="pic/u=1424111904,1980194338&fm=27&gp=0.jpg"></a>
+        <div class="div1">
+            <div class="div1-1">
+                <a href="#">文章题目</a>
+            </div>
+            <div class="div1-1">
+                文章内容文章内容文章内容文章内容文章内容文章内容
+            </div>
+        </div>
+    </div>
+    <div>
+        <a href="#"><img src="pic/u=2809576112,626361756&fm=27&gp=0.jpg"></a>
+        <div class="div1">
+            <div class="div1-1">
+                <a href="#">文章题目</a>
+            </div>
+            <div class="div1-1">
+                文章内容文章内容文章内容文章内容文章内容文章内容
+            </div>
+        </div>
+    </div>
+    <div>
+        <a href="#"><img src="pic/下载.jpg"></a>
+        <div class="div1">
+            <div class="div1-1">
+                <a href="#">文章题目</a>
+            </div>
+            <div class="div1-1">
+                文章内容文章内容文章内容文章内容文章内容文章内容
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

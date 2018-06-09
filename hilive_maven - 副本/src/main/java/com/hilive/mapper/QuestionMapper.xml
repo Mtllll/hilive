@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hilive.mapper.QuestionMapper">
+    <insert id="addQuestion" parameterType="QuestionInfo">
+        <selectKey keyProperty="id" order="AFTER" resultType="int">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into questioninfo(title,topic_markdown_content,topic_html_content,createtime,user_id,classification)
+        values(#{title},#{topic_markdown_content},#{topic_html_content},#{createtime},#{user_id},#{classification})
+    </insert>
+
+    <select id="getAllQuestions" resultType="map">
+        select questioninfo.id,questioninfo.createtime,questioninfo.answer_count,questioninfo.title,questioninfo.topic_html_content,userinfo.username from questioninfo
+        join userinfo on userinfo.id = questioninfo.user_id
+        order by questioninfo.createtime desc
+    </select>
+
+    <select id="getQuestionById" resultType="map" parameterType="int">
+        select questioninfo.id,questioninfo.title,questioninfo.topic_html_content,
+        questioninfo.browse_count,questioninfo.answer_count,questioninfo.classification,
+        questioninfo.share_count,userinfo.username,userinfo.online_time,
+        userinfo.avatar,userinfo.post_count,userinfo.createtime
+        from questioninfo
+        join userinfo on userinfo.id = questioninfo.user_id
+        where questioninfo.id = #{value}
+    </select>
+    <select id="getQuestionByTitle" resultType="map" parameterType="String">
+        select questioninfo.title,questioninfo.id,questioninfo.topic_html_content,
+        questioninfo.browse_count,questioninfo.answer_count,questioninfo.classification from questioninfo
+        where questioninfo.title = #{value}
+    </select>
+    <select id="isQuestionByTitle" resultType="int" parameterType="String">
+        select count(*) from questioninfo where questioninfo.title = #{value}
+    </select>
+    <select id="updateQuestionAnswer_countByQuestionId" parameterType="int">
+        update  questioninfo set answer_count =(select count(content) from answerinfo where question_id=#{value}) where id=#{value}
+    </select>
+
+    <select id="getQuestionsByTitleOrTopic_html_content" parameterType="QuestionInfo" resultType="map">
+         select topic_html_content,createtime,title,id from questioninfo
+        <!--<where>-->
+            <!--<if test="title != null and title != ''">-->
+                <!--or title like #{title}-->
+            <!--</if>-->
+            <!--<if test="topic_html_content != null and topic_html_content != ''">-->
+                <!--or  topic_html_content like #{topic_html_content}-->
+            <!--</if>-->
+        <!--</where>-->
+       where title like #{title} or  topic_html_content like #{topic_html_content} order by createtime desc
+    </select>
+
+    <update id="addbrowse_count" parameterType="int">
+        update questioninfo set browse_count=browse_count + 1 where id=#{value}
+    </update>
+</mapper>

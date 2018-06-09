@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hilive.mapper.GoodsInfoMapper">
+    <insert id="addGoodsInfo" parameterType="GoodsInfo" >
+        <selectKey keyProperty="id" order="AFTER" resultType="int">
+            SELECT LAST_INSERT_ID();
+        </selectKey>
+        insert INTO goodsinfo (goods_name,description,price,brand,goods_type,score,picture)
+        VALUES (#{goods_name},#{description},#{price},#{brand},#{goods_type},#{score},#{picture})
+    </insert>
+    <select id="showGoodsInfo" resultType="map">
+        SELECT * FROM goodsinfo
+    </select>
+    <select id="showGoodsInfoById" resultType="GoodsInfo" parameterType="int">
+        SELECT * FROM goodsinfo WHERE id=#{VALUE}
+    </select>
+</mapper>

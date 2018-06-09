@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hilive.mapper.UserMapper">
+    <insert id="addUser" parameterType="Userinfo">
+        <selectKey keyProperty="id" order="AFTER" resultType="int">
+            select LAST_INSERT_ID()
+        </selectKey>
+        INSERT userinfo (createtime,username,password,phonenumber)VALUES (#{createtime},#{username},#{password},#{phonenumber})
+    </insert>
+    <select id="nameIsExist" parameterType="String" resultType="Userinfo">
+        select * from userinfo where username=#{value}
+    </select>
+    <update id="updateUser" parameterType="Userinfo">
+UPDATE userinfo set introduce=#{introduce},avatar=#{avatar},nickname=#{nickname},sex=#{sex} where id=#{id}
+    </update>
+    <select id="selectUser" parameterType="int" resultType="Userinfo">
+        select * from userinfo where id=#{value}
+    </select>
+    <select id="FindUserByNameAndPkey" parameterType="Userinfo" resultType="Userinfo">
+        select * FROM userinfo where username=#{username} and password=#{password}
+    </select>
+    <update id="addArticle" parameterType="int">
+        UPDATE userinfo set article_count=article_count+1 where id=#{id}
+    </update>
+    <update id="addCollect" parameterType="int">
+        UPDATE userinfo set collection_count=collection_count+1 where id=#{id}
+    </update>
+    <update id="addPost" parameterType="int">
+        UPDATE userinfo set post_count=post_count+1 where id=#{id}
+    </update>
+    <update id="addFollow" parameterType="int">
+        UPDATE userinfo set follow_count=follow_count+1 where id=#{id}
+    </update>
+    <update id="addFans" parameterType="int">
+        UPDATE userinfo set fans_count=fans_count+1 where id=#{id}
+    </update>
+    <update id="deleteFollow" parameterType="int">
+        UPDATE userinfo set follow_count=follow_count-1 where id=#{id}
+    </update>
+    <update id="deleteFans" parameterType="int">
+        UPDATE userinfo set fans_count=fans_count-1 where id=#{id}
+    </update>
+</mapper>

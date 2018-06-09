@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hilive.mapper.RelationMapper">
+    <insert id="addFollowRelation" parameterType="RelationInfo">
+        insert into relationinfo (my_id,our_relation,her_id)
+        values(#{my_id},1,#{her_id})
+    </insert>
+    <insert id="addFansRelation" parameterType="RelationInfo">
+        insert into relationinfo (my_id,our_relation,her_id)
+        values(#{her_id},2,#{my_id})
+    </insert>
+    <delete id="deleteFollowRelation" parameterType="RelationInfo">
+        delete from relationinfo
+        where my_id=#{my_id} and her_id=#{her_id} and our_relation=1
+    </delete>
+    <delete id="deleteFansRelation" parameterType="RelationInfo">
+        delete from relationinfo
+        where my_id=#{her_id} and her_id=#{my_id} and our_relation=2
+    </delete>
+    <select id="selectRelation" parameterType="RelationInfo" resultType="map">
+        select our_relation from relationinfo
+        where my_id=#{my_id} and her_id=#{her_id}
+    </select>
+    <select id="selectFollowUsersById" parameterType="int" resultType="map">
+        select * from relationinfo
+        join userinfo on userinfo.id=relationinfo.her_id
+        where my_id=#{id} and our_relation=1
+    </select>
+    <select id="selectFansUsersById" parameterType="int" resultType="map">
+        select * from relationinfo
+        join userinfo on userinfo.id=relationinfo.her_id
+        where my_id=#{id} and our_relation=2
+    </select>
+</mapper>

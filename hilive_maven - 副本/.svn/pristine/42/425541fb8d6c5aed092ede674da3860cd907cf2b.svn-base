@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hilive.mapper.ArticleMapper">
+    <insert id="addArticle" parameterType="Articleinfo" >
+        <selectKey keyProperty="id" order="AFTER" resultType="int">
+            select LAST_INSERT_ID()
+        </selectKey>
+        INSERT articleinfo (title,content,user_id,createtime,topic_markdown_content,topic_html_content)
+        VALUES (#{title},#{content},#{user_id},#{createtime},#{topic_markdown_content},#{topic_html_content})
+
+    </insert>
+    <select id="view_article" parameterType="int" resultType="map">
+        select articleinfo.id, articleinfo.title,articleinfo.topic_html_content,articleinfo.comment_count,articleinfo.praise_count,
+        articleinfo.share_count,articleinfo.createtime,userinfo.username,userinfo.id as userid from articleinfo,userinfo where articleinfo.user_id
+        =userinfo.id and articleinfo.id=#{value}
+
+    </select>
+    <select id="allArticle"  resultType="map">
+        select userinfo.id as userid,  articleinfo.topic_markdown_content,articleinfo.topic_html_content, articleinfo.id,articleinfo.title,articleinfo.content,articleinfo.comment_count,articleinfo.praise_count, articleinfo.user_id,
+        articleinfo.share_count,articleinfo.createtime,userinfo.avatar,userinfo.username from articleinfo,userinfo where articleinfo.user_id
+        =userinfo.id ORDER by articleinfo.createtime desc
+    </select>
+
+    <update id="add_praise" parameterType="int">
+        UPDATE articleinfo praise_count set praise_count=praise_count+1 where id=#{id}
+    </update>
+    <update id="reducePraise" parameterType="int">
+        UPDATE articleinfo praise_count set praise_count=praise_count-1 where id=#{id}
+    </update>
+    <select id="selectById" resultType="map" parameterType="int">
+        select articleinfo.id,articleinfo.title,articleinfo.content,articleinfo.comment_count,articleinfo.praise_count,
+        articleinfo.share_count,articleinfo.createtime,userinfo.username,userinfo.id as userid from articleinfo,userinfo where articleinfo.user_id
+        =userinfo.id and user_id=#{id} ORDER by articleinfo.createtime desc
+    </select>
+    <update id="add_transmit" parameterType="int">
+        UPDATE articleinfo share_count SET share_count=share_count+1  where id=#{id}
+    </update>
+<update id="add_comment" parameterType="int">
+    UPDATE articleinfo comment_count set comment_count=comment_count+1 where id=#{a}
+</update>
+    <select id="ajax_collection_article" parameterType="int" resultType="map">
+        select articleinfo.title,articleinfo.id  from articleinfo join article_transmitinfo on article_transmitinfo.article_id=articleinfo.id
+        where article_transmitinfo.user_id=#{id}
+    </select>
+
+</mapper>
